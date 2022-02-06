@@ -34,7 +34,7 @@ export default function Home () {
 
                     {Boolean(apiRes) ? 
                         (Boolean(apiRes.message) ? 
-                            <Error theme={theme}/> : <h1>User Data</h1>
+                            <Error theme={theme}/> : <UserData theme={theme} user={apiRes}/>
                         ) : 
                         null
                     }
@@ -139,6 +139,38 @@ function Error(props){
                     No user found!
                 </Text>
                 <Icon size='20px' name="FaRegWindowClose"></Icon>
+            </Box>
+        </>
+    )
+}
+
+function UserData({user, theme}){
+    return (
+        <>
+            <Box styleSheet={{background: Pallete[theme]['secondary-background'], borderRadius: 'var(--brd-radius)', padding: 'var(--spc3)'}}>
+                {/* Heading */}
+                <Box styleSheet={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
+                    <Image src={user['avatar_url']} alt={user.login} styleSheet={{
+                        borderRadius: '50%', width:'25%'
+                    }}/>
+                    <Box>
+                        <Box>
+                            {/* flex-wrap */}
+                            <Text tag="h2" styleSheet={{
+                                color: Pallete[theme]['font-color'], fontWeight: 'var(--fw1)',
+                                fontSize: 'var(--fs1)',
+                                wordWrap: 'break-word'
+                            }}>
+                                {user.name}
+                            </Text>
+                            <a target='_blank' href={user['html_url']}>
+                                <Text href={user['html_url']} styleSheet={{color: Pallete[theme]['accent-color']}}>
+                                    {'@'+user.login}
+                                </Text>
+                            </a>
+                        </Box>
+                    </Box>                  
+                </Box>
             </Box>
         </>
     )

@@ -27,6 +27,10 @@ export default function Global() {
                 transition: .2s ease;
             }
 
+            a{
+                text-decoration: none
+            }
+
             main{
                 background: var(--very-dark-blue);
                 display: flex;
