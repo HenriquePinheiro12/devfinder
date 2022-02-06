@@ -5,7 +5,7 @@ import Pallete from '../config.json'
 export default function Home () {
     const [theme, setTheme] = useState('dark')
     const [usernameInput, setUsernameInput] = useState('')
-    const [userData, setUserData] = useState([])
+    const [apiRes, setApiRes] = useState()
 
     const inputText = useRef()
     // creates a reference to the alement
@@ -15,9 +15,14 @@ export default function Home () {
         setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        console.log(inputText.current.value)
+        const username = inputText.current.value
+        const userJson = 
+            await fetch(`https://api.github.com/users/${username}`)
+                    .then(res => res.json())
+        console.log(userJson)
+        setApiRes(userJson)
     }
 
     return (
@@ -26,9 +31,13 @@ export default function Home () {
                <Box tag="section" styleSheet={{width: '800px', maxWidth: '90%'}}>
                     <Header theme={theme} swapTheme={swapTheme}/>
                     <SearchBar inputText={inputText} handleSubmit={handleSubmit} theme={theme}/>
-                    {userData.map(val => {
-                        // return <User ref={searchBar}/>
-                    })}
+
+                    {Boolean(apiRes) ? 
+                        (Boolean(apiRes.message) ? 
+                            <Error theme={theme}/> : <h1>User Data</h1>
+                        ) : 
+                        null
+                    }
                </Box>
 
            </main>
@@ -52,7 +61,6 @@ function Header(props){
             {theme: 'dark', iconName: 'FaSun'}
             )}
         )
-        console.log(swapper)
         props.swapTheme()
 
     }
@@ -89,18 +97,14 @@ function SearchBar(props){
     return (
         <>
             <Box styleSheet={{borderRadius: 'var(--brd-radius)', background: Pallete[props.theme]['secondary-background'], padding: 'var(--spc1)', margin: 'var(--spc3) 0', boxShadow: 'var(--bxs)' }}>
-                <Box as="form" onSubmit={props.handleSubmit} styleSheet={{display: 'flex', alignItems:'center', justifyContent:'space-around'}}>
+                <Box as="form" onSubmit={e => {
+                    props.handleSubmit(e)
+                    setInput('')
+                    }} styleSheet={{display: 'flex', alignItems:'center', justifyContent:'space-around'}}>
                     <Icon onSubmit={props.handleSubmit} size="24px" styleSheet={{
                         color: Pallete[props.theme]['accent-color'], transform: 'rotate(90deg)'
                     }} name="FaSearch"></Icon>
-                    <input ref={props.inputText} styleSheet={{margin: '0 var(--spc1)', width: '100%'}} value={input} onChange={handleInput} variant="basicBordered"  type="text" placeholder="Search Github username" fullWidth textFieldColors={{
-                        neutral: {
-                            backgroundColor: 'transparent',
-                            mainColor: 'transparent',
-                            textColor: Pallete[props.theme]['font-color'],
-                            mainColorHighlight: 'transparent'
-                        }
-                    }}></input>
+                    <input ref={props.inputText} value={input} onChange={handleInput} type="text" placeholder="Search Github username"></input>
                     <Button buttonColors={{contrastColor: 'none'}} type="submit" label="Search" styleSheet={{
                         background: Pallete[props.theme]['accent-color'], color: '#fff',
                         fontSize: 'var(--fs2)', borderRadius: 'var(--brd-radius)', 
@@ -109,10 +113,32 @@ function SearchBar(props){
                     <style jsx>{`
                         input{
                             margin: 0 var(--spc1);
-                            flex: 1;
+                            flex-basis: 80%;
+                            height: 100%;
+                            background: transparent;
+                            border: none;
+                            outline: 0;
+                            color: ${Pallete[props.theme]['font-color']};
+                            padding: 0 var(--spc1)
                         }
                     `}</style>
                 </Box>
+            </Box>
+        </>
+    )
+}
+
+function Error(props){
+    return (
+        <>
+            <Box styleSheet={{
+                 borderRadius: 'var(--brd-radius)', display: 'flex', alignItems: 'center', color: Pallete[props.theme]['font-color'],
+                 flexDirection: 'column'
+            }}>
+                <Text variant="heading2">
+                    No user found!
+                </Text>
+                <Icon size='20px' name="FaRegWindowClose"></Icon>
             </Box>
         </>
     )
