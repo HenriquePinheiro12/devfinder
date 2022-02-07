@@ -1,0 +1,16 @@
+    {
+    "dark":{
+        "primary-background" : "#141c2f",
+        "secondary-background" : "#1f2a48",
+        "accent-color" : "#0079fe",
+        "font-color" : "#fff",
+        "opaque-color" : "#8e94a3" 
+    },
+    "light": {
+        "primary-background" : "#f5f8ff",
+        "secondary-background" : "#fefefe",
+        "accent-color" : "#0079fe",
+        "font-color" : "#363940",
+        "opaque-color" : "#a5b5cf"
+    }
+}
