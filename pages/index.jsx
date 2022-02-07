@@ -21,7 +21,6 @@ export default function Home () {
         const userJson = 
             await fetch(`https://api.github.com/users/${username}`)
                     .then(res => res.json())
-        // console.log(userJson)
         setApiRes(userJson)
     }
 
