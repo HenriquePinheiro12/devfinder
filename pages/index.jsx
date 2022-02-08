@@ -51,16 +51,20 @@ export default function Home () {
 
 // todo: fix setSwapper logic
 function Header(props){
-    const [swapper, setSwapper] = useState({theme: 'light', iconName: 'FaSun'})
+    const [swapper, setSwapper] = useState(() => { // button to change the theme
+        return props.theme === 'dark' ? 
+        ({theme: 'light', iconName: 'FaSun'}) :
+        ({theme: 'dark', iconName: 'FaMoon'})
+    })
 
-    const changeTheme = () => {
+    function changeTheme (){
+        props.swapTheme() //changes main component´s theme state
         setSwapper(() => {
-            return (
-            props.theme === 'dark' ? {theme: 'light', iconName: 'FaMoon'} :
-            {theme: 'dark', iconName: 'FaSun'}
-            )}
-        )
-        props.swapTheme()
+            return props.theme === 'dark' ? 
+            ({theme: 'dark', iconName: 'FaMoon'}) :
+            ({theme: 'light', iconName: 'FaSun'}) 
+        })
+        
 
     }
 
