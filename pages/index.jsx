@@ -27,7 +27,7 @@ export default function Home () {
     return (
         <> 
            <main>
-               <Box tag="section" styleSheet={{width: '800px', maxWidth: '90%'}}>
+               <Box tag="section" styleSheet={{width: '800px', maxWidth: '90%', margin: 'var(--spc3) 0'}}>
                     <Header theme={theme} swapTheme={swapTheme}/>
                     <SearchBar inputText={inputText} handleSubmit={handleSubmit} theme={theme}/>
 
@@ -144,6 +144,7 @@ function Error(props){
 }
 
 function UserData({user, theme}){
+    
     const getDate = (date) =>{
         const primitiveDate = new Date(date)
         const formatedDate = primitiveDate.toLocaleString('en', {day: '2-digit', month: 'short', year:'numeric'})
@@ -154,9 +155,9 @@ function UserData({user, theme}){
         <>
             <Box styleSheet={{background: Pallete[theme]['secondary-background'], borderRadius: 'var(--brd-radius)', padding: 'var(--spc3)', boxShadow: 'var(--bxs)'}}>
                 {/* Heading */}
-                <Box styleSheet={{display: 'flex',alignItems: 'flex-start'}}>
+                <Box styleSheet={{display: 'flex',alignItems: 'flex-start', margin: 'var(--spc2) 0'}}>
                     <Image src={user['avatar_url']} alt={user.login} styleSheet={{
-                        borderRadius: '50%', width:'25%', marginRight: 'var(--spc3)'
+                        borderRadius: '50%', width:'15%', marginRight: 'var(--spc3)'
                     }}/>
                     {/* flex-wrap */}
                     <Box styleSheet={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', flex: '1', alignItems:'baseline'}}>
@@ -167,7 +168,7 @@ function UserData({user, theme}){
                                     sm: 'var(--fs1)',
                                     xs: 'var(--fs2)'
                                 },
-                                wordWrap: 'break-word', flexWrap: 'wrap'
+                                wordWrap: 'break-word', flexWrap: 'wrap', marginRight: 'var(--spc1)'
                             }}>
                                 {user.name}
                             </Text>
@@ -185,6 +186,75 @@ function UserData({user, theme}){
 
                     </Box>                  
                 </Box>
+                {/* Status */}
+                <Box styleSheet={{color: Pallete[theme]['font-color'], marginLeft: {md: 'auto'}, width:{
+                    md: '80%'
+                }}}>
+                    {/* Bio */}
+                    <Text type='p' styleSheet={{lineHeight: '1.5rem', maxWidth: {md: '90%'}, color: (Boolean(!user['bio']) && Pallete[theme]['opaque-color'])}}>
+                        {user['bio'] || 'This user has no bio'}
+                    </Text>
+
+                    {/* Analitcs */}
+                    <Box
+                    styleSheet={{margin:'var(--spc3) 0',background: Pallete[theme]['primary-background'], borderRadius: 'var(--brd-radius)', display: 'flex', alignItems: 'center', justifyContent:'space-around', color: Pallete[theme]['font-color'], padding:'var(--spc2)'}}>
+                            <Box>
+                                <Text styleSheet={{fontWeight: 'var(--fw2)', fontSize:'var(--fs3)'}}>
+                                    Repos
+                                </Text>
+                                <Text styleSheet={{fontWeight: 'var(--fw1)', fontSize:'var(--fs1)'}}>
+                                    {user['public_repos']}
+                                </Text>
+                            </Box>
+
+                            <Box>
+                                <Text styleSheet={{fontWeight: 'var(--fw2)', fontSize:'var(--fs3)'}}>
+                                    Followers
+                                </Text>
+                                <Text styleSheet={{fontWeight: 'var(--fw1)', fontSize:'var(--fs1)'}}>
+                                    {user['followers']}
+                                </Text>
+                            </Box>
+
+                            <Box>
+                                <Text styleSheet={{fontWeight: 'var(--fw2)', fontSize:'var(--fs3)'}}>
+                                    Following
+                                </Text>
+                                <Text styleSheet={{fontWeight: 'var(--fw1)', fontSize:'var(--fs1)'}}>
+                                    {user['following']}
+                                </Text>
+                            </Box> 
+
+                    </Box>
+
+                    {/* Others */}
+                    <Box styleSheet={{display: 'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px,1fr))', gap:'var(--spc2)', margin: 'var(--spc2) 0'}}>
+
+                       <Link theme={theme} name='FaMapMarker' data={user['location']} />
+                       
+                       <Link theme={theme} name='FaTwitter' data={user['twitter_username']} />
+                       
+                       <Link theme={theme} name='FaLink' data={user['blog']} />
+                       
+                       <Link theme={theme} name='FaBuilding' data={user['company']} />
+                                            
+                    </Box>
+                </Box>
+
+            </Box>
+        </>
+    )
+}
+
+
+function Link({theme, name, data}){
+    return (
+        <>
+            <Box styleSheet={{display: 'flex', alignItems:'center', color: Boolean(data) ?  Pallete[theme]['font-color'] : Pallete[theme]['opaque-color']}}>
+                <Icon styleSheet={{marginRight:'var(--spc2)'}} name={name}/>
+                <Text>
+                    {data || 'Not Available'}
+                </Text>
             </Box>
         </>
     )
