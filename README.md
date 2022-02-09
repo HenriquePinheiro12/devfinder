@@ -6,7 +6,7 @@
 - Project built with Next.js
 - Live site: [http://devfinder-dun.vercel.app/](http://devfinder-dun.vercel.app/)
 
-This project is based on pro challange from __frontendmentor.io__. I didn´t have access to it, so I built it by myself based on the project´s idea. 
+This project is based on a pro challange from __frontendmentor.io__. I didn´t have access to it, so I built it by myself based on the project´s idea. 
 
 ## Screenshots
 
